@@ -25,11 +25,9 @@
       <div class="uni-list-control" style="z-index: 3; position: absolute; left: 0px;">
         <div id="uni-list-hideable" class="uni-menu-offsmall">
             <div class="search-box">
-            <input type="search" placeholder="Search universities..." id="uni-search" data-bind="textInput: searchText"/>
-            <button class="search-box-clear" data-bind="click: clearSearchText"><i class="material-icons">clear</i></button>
-          </div>
-        </div>
-        <div id="uni-list-hideable" class="uni-menu-offsmall">
+              <input type="search" placeholder="Search universities..." id="uni-search" data-bind="textInput: searchText"/>
+              <button class="search-box-clear" data-bind="click: clearSearchText"><i class="material-icons">clear</i></button>
+            </div>
             <div class="uni-list">
               <ul class="uni-list-ul" data-bind="foreach: universities">
                 <li data-bind="text: name, click: showInfoWindow"></li>

@@ -47,13 +47,13 @@ $secondary-body-color: #8e8e8e;
     border-bottom: none;
   }
   @media screen and (max-height: 399px) {
-    max-height: 350px;
+    max-height: 250px;
   }
   @media screen and (min-height: 401px) {
-    max-height: 500px;
+    max-height: 300px;
   }
   @media screen and (min-height: 550px) {
-    max-height: 580px;
+    max-height: 500px;
   }
   @media screen and (min-height: 675px) {
     max-height: 600px;
@@ -88,6 +88,9 @@ $secondary-body-color: #8e8e8e;
     width: 190px;
     line-height: 20px;
     border: none;
+    font-size: 14px;
+    margin-bottom: 5px;
+    margin-left: 8px;
   }
 }
 
