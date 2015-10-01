@@ -1,15 +1,12 @@
-// generated on 2015-08-30 using generator-gulp-webapp 1.0.3
+// generated on 2015-07-14 using generator-gulp-webapp 1.0.3
 import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import browserSync from 'browser-sync';
 import del from 'del';
 import {stream as wiredep} from 'wiredep';
-import babel from 'gulp-babel';
-import gulpSequence  from 'gulp-sequence';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
-
 
 gulp.task('styles', () => {
   return gulp.src('app/styles/*.scss')
@@ -35,13 +32,27 @@ function lint(files, options) {
       .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
   };
 }
+
+const lintOptions = {
+    ecmaFeatures: {
+        "blockBindings": true,
+        "templateStrings": true,
+        "forOf": true,
+        "jsx": true
+    },
+    rules: {
+        'no-unused-vars': 0,
+        "semi": 2
+    }
+};
+
 const testLintOptions = {
   env: {
     mocha: true
   }
 };
 
-gulp.task('lint', lint('app/scripts/**/*.js'));
+gulp.task('lint', lint('app/scripts/*.js', lintOptions));
 gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
 
 gulp.task('html', ['styles'], () => {
@@ -49,9 +60,8 @@ gulp.task('html', ['styles'], () => {
 
   return gulp.src('app/*.html')
     .pipe(assets)
-    .pipe($.if('*.js', babel()))
-    .pipe($.if('*.js', $.uglify()))
-    //.pipe($.if('*.css', $.minifyCss({compatibility: '*'})))
+//    .pipe($.if('*.js', $.uglify()))
+    .pipe($.if('*.css', $.minifyCss({compatibility: '*'})))
     .pipe(assets.restore())
     .pipe($.useref())
     .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
@@ -82,6 +92,10 @@ gulp.task('fonts', () => {
     .pipe(gulp.dest('dist/fonts'));
 });
 
+gulp.task('components', () => {
+  return gulp.src('app/components/**/*').pipe(gulp.dest('dist/components'));
+});
+
 gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
@@ -94,13 +108,14 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('serve', ['styles', 'fonts'], () => {
-    browserSync({
+  browserSync({
     notify: false,
     port: 9000,
     server: {
       baseDir: ['.tmp', 'app'],
       routes: {
-        '/bower_components': 'bower_components'
+        '/bower_components': 'bower_components',
+        '/components': 'components'
       }
     }
   });
@@ -124,18 +139,6 @@ gulp.task('serve:dist', () => {
     server: {
       baseDir: ['dist']
     }
-  });
-  gulp.watch([
-    'app/*.html',
-    'app/scripts/**/*.js',
-    'app/images/**/*',
-    '.tmp/fonts/**/*'
-  ]).on('change',  () => {
-    gulpSequence('build', reload);
-
-    gulp.watch('app/styles/**/*.scss', ['styles']);
-    gulp.watch('app/fonts/**/*', ['fonts']);
-    gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
 });
 
@@ -166,14 +169,19 @@ gulp.task('wiredep', () => {
 
   gulp.src('app/*.html')
     .pipe(wiredep({
-      exclude: ['bootstrap-sass'],
       ignorePath: /^(\.\.\/)*\.\./
     }))
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['html', 'images', 'fonts', 'extras'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'components'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+});
+
+gulp.task('deploy', ['build'], function () {
+  return gulp.src('dist')
+    .pipe($.subtree())
+    .pipe($.clean());
 });
 
 gulp.task('default', ['clean'], () => {

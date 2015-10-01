@@ -1,6 +1,6 @@
 
-/* jshint multistr: true */
-/* global $, google */
+/* eslint multistr: true */
+/* global $, google, ko */
 /* exported googleMapService */
 
 /**
@@ -49,7 +49,7 @@ var googleMapService = new (function() {
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(university.location.lat(), university.location.long()),
             animation: google.maps.Animation.DROP,
-            icon:  'images/uni.png'
+            icon: 'images/uni.png'
         });
 
         marker.setMap(map);
@@ -59,7 +59,7 @@ var googleMapService = new (function() {
             infoWindow.setContent(self.createInfoWindowContent(university));
             vm.loadPics(university.name());
             infoWindow.open(map, this);
-            ko.applyBindings(vm, $(".info-popup")[0]);
+            ko.applyBindings(vm, $('.info-popup')[0]);
         }
 
         google.maps.event.addListener(marker, 'click', openMarker);
@@ -73,19 +73,18 @@ var googleMapService = new (function() {
       var marker = new google.maps.Marker({
           position: new google.maps.LatLng(university.location.lat(), university.location.long()),
           animation: google.maps.Animation.DROP,
-          icon:  'images/uni.png'
+          icon: 'images/uni.png'
       });
 
       marker.setMap(map);
 
       self.bounceOnce(marker);
       infoWindow.setContent(self.createInfoWindowContent(university));
-      vm.loadPics(university.name());
       infoWindow.open(map, marker);
-      ko.applyBindings(vm, $(".info-popup")[0]);
+      ko.applyBindings(vm, $('.info-popup')[0]);
 
       return marker;
-    }
+    };
 
     /**
      * It fits the map bounds to the markers in the map.
@@ -129,7 +128,8 @@ var googleMapService = new (function() {
 
     self.setCenter = function(){
       map.setCenter(new google.maps.LatLng(37.6292, -122.1381));
-    }
+    };
+
     /**
     * Map initialization.
     * @param  {DOMElement} mapCanvasId Canvas that will contain the map.
@@ -140,6 +140,7 @@ var googleMapService = new (function() {
            center: sanFranciscoBayArea,
            zoom: 10,
            disableDefaultUI: true,
+           scrollwheel: false,
            zoomControl: true,
            styles: [{
                featureType: 'poi',
@@ -173,7 +174,7 @@ var googleMapService = new (function() {
        }
        new google.maps.places.PlacesService(map).nearbySearch(request, myCallBack);
       });
-   }
+   };
 
 
    /**
@@ -228,7 +229,7 @@ var googleMapService = new (function() {
    */
    self.createInfoWindowContent = function(university) {
         var uniRating;
-        if(typeof university.rating == 'undefined'){
+        if(typeof university.rating === 'undefined'){
             uniRating = 'no rating';
         } else {
             uniRating = university.rating();
@@ -246,7 +247,7 @@ var googleMapService = new (function() {
                               <img src="../images/insta.png" class="insta-icon"/>
                           </span>
                         </div>
-                        <div class="mdl-card__actions mdl-card--border" style="height:350px; overflow-y:scroll;overflow-x: hidden;">
+                        <div class="mdl-card__actions mdl-card--border" data-bind="visible: showPics" style="height:350px; overflow-y:scroll;overflow-x: hidden;">
                           <div class="row infoPics" data-bind="foreach: instagramPictures">
                             <div class="col-xs-6 col-md-3" style="width: 50%; height: 300px;">
                               <a data-bind="attr: {href: $data.link}" target="_blank" class="thumbnail">

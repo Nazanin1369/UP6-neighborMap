@@ -21,33 +21,14 @@
 
   </head>
   <body>
-    <!--[if lt IE 10]>
-      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
-
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
-      <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-
-          <div class="mdl-layout-spacer">
-            <label class="mdl-button mdl-js-button mdl-button--icon" data-bind="click: resetMap"><i class="material-icons">refresh</i></label>
-          </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-                      mdl-textfield--floating-label mdl-textfield--align-right">
-            <label class="mdl-button mdl-js-button mdl-button--icon"
-                   for="fixed-header-drawer-exp">
-              <i class="material-icons">search</i>
-            </label>
-            <div class="mdl-textfield__expandable-holder">
-              <input class="mdl-textfield__input" type="text" name="sample"
-                     id="fixed-header-drawer-exp" data-bind="textInput: searchText  "/>
-            </div>
+      <div class="uni-list-control" style="z-index: 3; position: absolute; left: 0px;">
+        <div id="uni-list-hideable" class="uni-menu-offsmall">
+            <div class="search-box">
+            <input type="search" placeholder="Search universities..." id="uni-search" data-bind="textInput: searchText"/>
+            <button class="search-box-clear" data-bind="click: clearSearchText"><i class="material-icons">clear</i></button>
           </div>
         </div>
-      </header>
-
-      <div class="uni-list-control" style="z-index: 3; position: absolute; left: 0px; top: 55px;">
         <div id="uni-list-hideable" class="uni-menu-offsmall">
             <div class="uni-list">
               <ul class="uni-list-ul" data-bind="foreach: universities">
@@ -56,13 +37,7 @@
             </div>
         </div>
       </div>
-      <!-- content -->
-      <main>
-        <div class="page-content">
-           <div id="google-map"  data-tap-disabled="true"></div>
-         </div>
-      </main>
-      <!-- end of content -->
+      <div id="google-map"  data-tap-disabled="true"></div>
 </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

@@ -1,4 +1,6 @@
+/* global $, googleMapService, ko, _ */
 
+'use strict';
 //Model
 var model = {
     universities: []
@@ -14,14 +16,14 @@ function getInstaPics(count, hashtag) {
       var clientId = '85a5b3cd341344cebeea9a990a80b3ed';
 			return new Promise(function(resolve, reject){
         $.getJSON(`https://api.instagram.com/v1/tags/${hashtag}/media/recent?callback=?&client_id=${clientId}&count=${count}`).then(function(response){
-          if(response.meta.code != '200'){
+          if(response.meta.code !== 200){
             reject(response.status);
             console.log('Could not get images from Instagram API.');
           }else{
             resolve(response.data);
           }
         });
-      })
+      });
 }
 
 /**
@@ -32,7 +34,7 @@ function getInstaPics(count, hashtag) {
 */
 
 function filterUniversities(universities, searchText) {
-    if(searchText == ''){
+    if(searchText === ''){
       return model.universities;
     }
     return _.filter(universities,
@@ -54,7 +56,6 @@ function initializeMarkers(vm) {
 
 // App initialization
 $(function() {
-    'use strict';
 
     googleMapService.initializeMap();
     googleMapService.fitBounds();
@@ -75,37 +76,59 @@ $(function() {
                     };
                 },
                 '{root}': function(root){
+                  //hide and show images div
+                  root.showPics = ko.observable(false);
+                  //searchText used to search for universities
                   root.searchText = ko.observable('');
+                  //Error message
                   root.errors = ko.observable('');
+                  //clears the searchText in the input
+                  root.clearSearchText = function() {
+                    root.searchText('');
+                  };
+                  //reset the map center and zoom
                   root.resetMap = function() { googleMapService.setCenter(); };
+                  //observableArray to store instagram pictures
                   root.instagramPictures = ko.observableArray([
-                    { link :  ko.observable(''),
-                      txt:  ko.observable('')
+                    { link: ko.observable(''),
+                      txt: ko.observable('')
                     }
                   ]);
+                  //Loads instagram pictures by univerity name
                   root.loadPics = function(name){
+                    //make the university name compatible for instagram API
                     var instaName, words = name.split(/[\s,.]+/);
                     if(words.length < 3){
                         instaName = name.replace(/[\s]+/g, '').toLowerCase();
                     }else{
                         instaName = (words[0] + ' ' + words[1] + ' ' + words[2]).replace(/\s+/g, '').toLowerCase();
                     }
-                    getInstaPics(10, instaName).then(function(data){
-                      (root.instagramPictures().length > 1) && (root.instagramPictures.removeAll());
-                      console.log(instaName, data);
-                      _.map(data, function(x) {
+                    //get images from instagram
+                    getInstaPics(10, instaName).then(function(response){
+
+                      //If we already loaded pictures in our observable array, removed all of them
+                      if(root.instagramPictures().length >= 1){
+                        root.instagramPictures.removeAll();
+                      }
+
+                      //map the url and caption of the response to our view model observable array
+                      _.map(response, function(x) {
                           x.picUrl = ko.observable(x.images.thumbnail.url);
                           x.txt = ko.observable(x.caption.text);
                           root.instagramPictures.push(x);
                       });
+                      //make the visibility of the div true
+                      root.showPics(true);
+
                     })
                     .catch(function(reason){
                         root.errors('Cannot load pictures!');
                     });
-                  }
+                  };
                 }
             }
         });
+
         //Subscribe to search text change
         viewmodel.searchText.subscribe(function(value) {
            var updatedModel = { universities: filterUniversities(model.universities, value)};
@@ -119,6 +142,9 @@ $(function() {
     })
     .catch(function(reason){
         console.log(reason);
-        alert('Cannot connect to googleMap API service, Please try again!')
+        $('.google-map').hide();
+        $('body').prepend('<div class="error-dialog"><p class="error-message">' +
+                    'There was an error loading Google Maps. Please check ' +
+                    'your internet connection or try again later.</p></div>');
     });
 });

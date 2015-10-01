@@ -1,0 +1,106 @@
+$window-background-color: #fff;
+$light-border: #cecece;
+$hover-background-color: rgba(11, 104, 254, 0.2);
+$secondary-body-color: #8e8e8e;
+
+@mixin transition($property, $time, $effect) {
+  -webkit-transition: $property $time $effect;
+  -moz-transition: $property $time $effect;
+  -o-transition: $property $time $effect;
+  transition: $property $time $effect;
+}
+
+
+.uni-list-control {
+  margin: 16px;
+  padding: 0px;
+  width: 246px;
+}
+
+.uni-list {
+  margin: 4px 0 0 0;
+  padding: 4px 8px;
+  background-color: transparentize($window-background-color, 0.3);
+  border: 1px solid $light-border;
+}
+
+.uni-list-ul {
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+  p {
+    font-size: 14px;
+    line-height: 14px;
+    margin: 4px 0px;
+  }
+  li {
+    padding: 3px;
+    list-style: none;
+    border-bottom: 1px dotted $light-border;
+    @include transition(background-color, 0.5s, ease);
+  }
+  li:hover {
+    cursor: pointer;
+    background-color: $hover-background-color;
+  }
+  li:last-child, .uni-list-last {
+    border-bottom: none;
+  }
+  @media screen and (max-height: 399px) {
+    max-height: 350px;
+  }
+  @media screen and (min-height: 401px) {
+    max-height: 500px;
+  }
+  @media screen and (min-height: 550px) {
+    max-height: 580px;
+  }
+  @media screen and (min-height: 675px) {
+    max-height: 600px;
+  }
+}
+
+.uni-list-name {
+  font-weight: bold;
+}
+
+.uni-list-data {
+  color: $secondary-body-color;
+}
+
+.uni-menu-offsmall {
+  @media screen and (max-width: 749px) {
+    display: none;
+  }
+}
+
+// Search box module
+
+.search-box {
+  margin: 0;
+  padding: 0;
+  background: white;
+  border: 2px solid $light-border;
+  input {
+    display: inline-block;
+    margin: 0;
+    outline: 0;
+    width: 190px;
+    line-height: 20px;
+    border: none;
+  }
+}
+
+.search-box-clear {
+  display: inline-block;
+  margin: 0;
+  outline: 0;
+  width: 40px;
+  padding: 6px;
+  font-size: 18px;
+  line-height: 20px;
+  min-width: 40px;
+  min-height: 34px;
+  background-color: white;
+  border: none;
+}

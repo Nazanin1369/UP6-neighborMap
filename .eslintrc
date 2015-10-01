@@ -1,0 +1,11 @@
+{
+    "ecmaFeatures": {
+        "blockBindings": true,
+        "templateStrings": true,
+        "forOf": true,
+        "jsx": true
+    },
+    "rules": {
+        "semi": 2
+    }
+}
