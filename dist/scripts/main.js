@@ -404,10 +404,6 @@ var googleMapService = new (function() {
                           <strong>Rating: ${uniRating}</strong>
                           <br/>
                           <span>${university.vicinity()}</span>
-                          <br/>
-                          <span class="pull-right">
-                              <img src="../images/insta.png" class="insta-icon"/>
-                          </span>
                         </div>
                         <div class="mdl-card__actions mdl-card--border" data-bind="visible: showPics" style="height:350px; overflow-y:scroll;overflow-x: hidden;">
                           <div class="row infoPics" data-bind="foreach: instagramPictures">
