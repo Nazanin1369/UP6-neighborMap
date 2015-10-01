@@ -32,6 +32,7 @@ You can view the live project [here](http://nazanin1369.github.io/neighborhoodMa
 #### Frameworks, APIs and Libraries
 
  * KnockoutJS
+ * [Knockout viewmodel plugin](http://coderenaissance.github.io/knockout.viewmodel/)
  * JQuery
  * Saas
  * Material lite
