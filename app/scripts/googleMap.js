@@ -80,6 +80,7 @@ var googleMapService = new (function() {
 
       self.bounceOnce(marker);
       infoWindow.setContent(self.createInfoWindowContent(university));
+      vm.loadPics(university.name());
       infoWindow.open(map, marker);
       ko.applyBindings(vm, $('.info-popup')[0]);
 
