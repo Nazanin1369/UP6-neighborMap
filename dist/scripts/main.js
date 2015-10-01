@@ -303,7 +303,6 @@ var googleMapService = new (function() {
            center: sanFranciscoBayArea,
            zoom: 10,
            disableDefaultUI: true,
-           scrollwheel: false,
            zoomControl: true,
            styles: [{
                featureType: 'poi',
