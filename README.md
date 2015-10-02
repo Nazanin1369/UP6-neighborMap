@@ -24,6 +24,7 @@ Pictures provided by Instagram API.
  * Run bower install --save <package> to install frontend dependencies
  * Run gulp to build your webapp for production
  * Run gulp serve:dist to preview the production build
+ * 
 
 
 #### Live view
