@@ -24,10 +24,11 @@ Pictures provided by Instagram API.
  * Run bower install --save <package> to install frontend dependencies
  * Run gulp to build your webapp for production
  * Run gulp serve:dist to preview the production build
+ * 
 
 
 #### Live view
-You can view the live project [here](http://nazanin1369.github.io/neighborhoodMap/dist/)
+You can view the live project [here](http://nazanin1369.github.io/UP6-neighborMap/dist/)
 
 #### Frameworks, APIs and Libraries
 
@@ -35,8 +36,8 @@ You can view the live project [here](http://nazanin1369.github.io/neighborhoodMa
  * [Knockout viewmodel plugin](http://coderenaissance.github.io/knockout.viewmodel/)
  * JQuery
  * Saas
- * Material lite
- * loDash
+ * [Material Design lite](http://www.getmdl.io/)
+ * [loDash](https://lodash.com/)
  * Instagram API
  * Google Map API
  
