@@ -36,8 +36,8 @@ You can view the live project [here](http://nazanin1369.github.io/UP6-neighborMa
  * [Knockout viewmodel plugin](http://coderenaissance.github.io/knockout.viewmodel/)
  * JQuery
  * Saas
- * Material lite
- * loDash
+ * [Material Design lite](http://www.getmdl.io/)
+ * [loDash](https://lodash.com/)
  * Instagram API
  * Google Map API
  
