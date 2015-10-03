@@ -38,6 +38,10 @@ $secondary-body-color: #8e8e8e;
     list-style: none;
     border-bottom: 1px dotted $light-border;
     @include transition(background-color, 0.5s, ease);
+    @media screen and (max-width: 649px) {
+        font-size: 12px;
+        padding: 1px;
+    }
   }
   li:hover {
     cursor: pointer;
@@ -69,8 +73,8 @@ $secondary-body-color: #8e8e8e;
 }
 
 .uni-menu-offsmall {
-  @media screen and (max-width: 749px) {
-    display: none;
+  @media screen and (max-width: 649px) {
+    width: 200px;
   }
 }
 
@@ -82,6 +86,10 @@ $secondary-body-color: #8e8e8e;
   background: white;
   border: 2px solid $light-border;
   input {
+    @media screen and (max-width: 649px) {
+      width: 135px;
+      font-size: 12px;
+    }
     display: inline-block;
     margin: 0;
     outline: 0;
@@ -92,18 +100,4 @@ $secondary-body-color: #8e8e8e;
     margin-bottom: 5px;
     margin-left: 8px;
   }
-}
-
-.search-box-clear {
-  display: inline-block;
-  margin: 0;
-  outline: 0;
-  width: 40px;
-  padding: 6px;
-  font-size: 18px;
-  line-height: 20px;
-  min-width: 40px;
-  min-height: 34px;
-  background-color: white;
-  border: none;
 }
