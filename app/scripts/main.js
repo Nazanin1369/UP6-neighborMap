@@ -19,7 +19,7 @@ function getInstaPics(count, hashtag) {
           .done(function(response){
               resolve(response.data);
           })
-          .fail(function() {
+          .fail(function(response) {
             reject(response.status);
             console.log('Could not get images from Instagram API.');
           });
@@ -84,10 +84,10 @@ $(function() {
                   root.searchText = ko.observable('');
                   //Error message
                   root.errors = ko.observable('');
-                  //
+                  //toggling list view on click
                   root.toggleList = function(){
                     root.showList(!root.showList());
-                  }
+                  };
                   //clears the searchText in the input
                   root.clearSearchText = function() {
                     root.searchText('');
