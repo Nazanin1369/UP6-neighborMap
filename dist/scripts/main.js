@@ -27,14 +27,14 @@ var model = {
 function getInstaPics(count, hashtag) {
       var clientId = '85a5b3cd341344cebeea9a990a80b3ed';
 			return new Promise(function(resolve, reject){
-        $.getJSON(`https://api.instagram.com/v1/tags/${hashtag}/media/recent?callback=?&client_id=${clientId}&count=${count}`).then(function(response){
-          if(response.meta.code !== 200){
+        $.getJSON(`https://api.instagram.com/v1/tags/${hashtag}/media/recent?callback=?&client_id=${clientId}&count=${count}`)
+          .done(function(response){
+              resolve(response.data);
+          })
+          .fail(function(response) {
             reject(response.status);
             console.log('Could not get images from Instagram API.');
-          }else{
-            resolve(response.data);
-          }
-        });
+          });
       });
 }
 
@@ -88,12 +88,18 @@ $(function() {
                     };
                 },
                 '{root}': function(root){
+                  //show and hide university list
+                  root.showList = ko.observable(true);
                   //hide and show images div
                   root.showPics = ko.observable(false);
                   //searchText used to search for universities
                   root.searchText = ko.observable('');
                   //Error message
                   root.errors = ko.observable('');
+                  //toggling list view on click
+                  root.toggleList = function(){
+                    root.showList(!root.showList());
+                  };
                   //clears the searchText in the input
                   root.clearSearchText = function() {
                     root.searchText('');
