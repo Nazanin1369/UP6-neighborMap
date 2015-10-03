@@ -85,15 +85,18 @@ $(function() {
                   //Error message
                   root.errors = ko.observable('');
                   //toggling list view on click
-                  root.toggleList = function(){
+                  root.toggleList = function() {
                     root.showList(!root.showList());
+                  };
+                  //resetting the map markers and center
+                  root.resetMap = function() {
+                      root.searchText('');
+                      googleMapService.reset();
                   };
                   //clears the searchText in the input
                   root.clearSearchText = function() {
                     root.searchText('');
                   };
-                  //reset the map center and zoom
-                  root.resetMap = function() { googleMapService.setCenter(); };
                   //observableArray to store instagram pictures
                   root.instagramPictures = ko.observableArray([
                     { link: ko.observable(''),

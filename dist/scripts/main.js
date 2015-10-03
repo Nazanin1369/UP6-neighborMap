@@ -97,15 +97,18 @@ $(function() {
                   //Error message
                   root.errors = ko.observable('');
                   //toggling list view on click
-                  root.toggleList = function(){
+                  root.toggleList = function() {
                     root.showList(!root.showList());
+                  };
+                  //resetting the map markers and center
+                  root.resetMap = function() {
+                      root.searchText('');
+                      googleMapService.reset();
                   };
                   //clears the searchText in the input
                   root.clearSearchText = function() {
                     root.searchText('');
                   };
-                  //reset the map center and zoom
-                  root.resetMap = function() { googleMapService.setCenter(); };
                   //observableArray to store instagram pictures
                   root.instagramPictures = ko.observableArray([
                     { link: ko.observable(''),
@@ -296,8 +299,10 @@ var googleMapService = new (function() {
         google.maps.event.trigger(markers[markerIndex], 'click');
     };
 
-    self.setCenter = function(){
+    self.reset = function(){
       map.setCenter(new google.maps.LatLng(37.6292, -122.1381));
+      map.setZoom(10);
+      googleMapService.getInfoWindow().close();
     };
 
     /**

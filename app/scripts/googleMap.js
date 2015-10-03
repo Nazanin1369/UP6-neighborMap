@@ -127,8 +127,10 @@ var googleMapService = new (function() {
         google.maps.event.trigger(markers[markerIndex], 'click');
     };
 
-    self.setCenter = function(){
+    self.reset = function(){
       map.setCenter(new google.maps.LatLng(37.6292, -122.1381));
+      map.setZoom(10);
+      googleMapService.getInfoWindow().close();
     };
 
     /**
