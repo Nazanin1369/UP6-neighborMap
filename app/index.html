@@ -22,11 +22,15 @@
   </head>
   <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
+
       <div class="uni-list-control" style="z-index: 3; position: absolute; left: 0px;">
-        <div id="uni-list-hideable" class="uni-menu-offsmall">
+        <button class="mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-button--colored" data-bind="click: toggleList">
+          <i class="material-icons">list</i>
+        </button>
+        <div id="uni-list-hideable" class="uni-menu-offsmall" data-bind="visible: showList">
             <div class="search-box">
               <input type="search" placeholder="Search universities..." id="uni-search" data-bind="textInput: searchText"/>
-              <button class="search-box-clear" data-bind="click: clearSearchText"><i class="material-icons">clear</i></button>
+              <button class="mdl-button mdl-js-button mdl-button--icon" data-bind="click: clearSearchText"><i class="material-icons">clear</i></button>
             </div>
             <div class="uni-list">
               <ul class="uni-list-ul" data-bind="foreach: universities">
