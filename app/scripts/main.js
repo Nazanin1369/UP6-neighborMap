@@ -97,6 +97,10 @@ $(function() {
                   root.clearSearchText = function() {
                     root.searchText('');
                   };
+                  //close info window
+                  root.closeInfoWndow = function() {
+                    googleMapService.getInfoWindow().close();
+                  };
                   //observableArray to store instagram pictures
                   root.instagramPictures = ko.observableArray([
                     { link: ko.observable(''),

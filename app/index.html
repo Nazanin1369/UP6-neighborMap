@@ -33,7 +33,7 @@
         <div id="uni-list-hideable" class="uni-menu-offsmall" data-bind="visible: showList">
             <div class="search-box">
               <input type="search" placeholder="Search universities..." id="uni-search" data-bind="textInput: searchText"/>
-              <button class="mdl-button mdl-js-button mdl-button--icon" data-bind="click: clearSearchText"><i class="material-icons">clear</i></button>
+              <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored clearSearchTextBtn" data-bind="click: clearSearchText"><i class="material-icons">clear</i></button>
             </div>
             <div class="uni-list">
               <ul class="uni-list-ul" data-bind="foreach: universities">
@@ -42,7 +42,7 @@
             </div>
         </div>
       </div>
-      <div id="google-map"  data-tap-disabled="true"></div>
+      <div id="google-map"></div>
 </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

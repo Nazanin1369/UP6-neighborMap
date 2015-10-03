@@ -109,6 +109,10 @@ $(function() {
                   root.clearSearchText = function() {
                     root.searchText('');
                   };
+                  //close info window
+                  root.closeInfoWndow = function() {
+                    googleMapService.getInfoWindow().close();
+                  };
                   //observableArray to store instagram pictures
                   root.instagramPictures = ko.observableArray([
                     { link: ko.observable(''),
@@ -300,7 +304,7 @@ var googleMapService = new (function() {
     };
 
     self.reset = function(){
-      map.setCenter(new google.maps.LatLng(37.6292, -122.1381));
+      map.setCenter(new google.maps.LatLng(37.618473, -122.486603));
       map.setZoom(10);
       googleMapService.getInfoWindow().close();
     };
@@ -310,7 +314,7 @@ var googleMapService = new (function() {
     * @param  {DOMElement} mapCanvasId Canvas that will contain the map.
     */
    self.initializeMap = function(mapCanvasId) {
-       var sanFranciscoBayArea = new google.maps.LatLng(37.6292, -122.1381);
+       var sanFranciscoBayArea = new google.maps.LatLng(37.618473, -122.486603);
        var mapOptions = {
            center: sanFranciscoBayArea,
            zoom: 10,
@@ -434,7 +438,7 @@ var googleMapService = new (function() {
                         </div>
 
                         <div class="mdl-card__menu">
-                          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" onclick="googleMapService.getInfoWindow().close()">
+                          <button class="mdl-button mdl-button--icon mdl-js-button" data-bind="click: closeInfoWndow, event: { touchend: closeInfoWndow }">
                             <i class="material-icons">clear</i>
                           </button>
                         </div></div>`;

@@ -14,7 +14,7 @@ $secondary-body-color: #8e8e8e;
 .uni-list-control {
   margin: 16px;
   padding: 0px;
-  width: 246px;
+  //width: 246px;
 }
 
 .uni-list {
@@ -100,4 +100,9 @@ $secondary-body-color: #8e8e8e;
     margin-bottom: 5px;
     margin-left: 8px;
   }
+}
+
+.clearSearchTextBtn {
+  float: right;
+  padding: 5px;
 }
