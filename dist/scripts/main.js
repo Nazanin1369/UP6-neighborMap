@@ -66,113 +66,129 @@ function initializeMarkers(vm) {
   }
 }
 
-// App initialization
-$(function() {
+/**
+* @name initializeViewModel
+* @description This function builds the view model after the data is loaded
+* by googleMap API service. It leverages "knockout viewModel plugin" to create
+* the viewModel.
+* @link http://coderenaissance.github.io/knockout.viewmodel/
+* @param data
+**/
+function initializeViewModel(data) {
+  //assign data to model.universities
+  model.universities = data;
+  //creating the viewModel object
+  var viewmodel = ko.viewmodel.fromModel(model, {
+      extend: {
+          '{root}.universities[i]': function(uni, root){
+              uni.showInfoWindow = function(){
+                  googleMapService.openInfoWindow(uni, viewmodel);
+              };
+          },
+          '{root}': function(root){
+            //show and hide university list
+            root.showList = ko.observable(true);
+            //hide and show images div
+            root.showPics = ko.observable(false);
+            //searchText used to search for universities
+            root.searchText = ko.observable('');
+            //Error message
+            root.errors = ko.observable('');
+            //toggling list view on click
+            root.toggleList = function() {
+              root.showList(!root.showList());
+            };
+            //resetting the map markers and center
+            root.resetMap = function() {
+                root.searchText('');
+                googleMapService.reset();
+            };
+            //clears the searchText in the input
+            root.clearSearchText = function() {
+              root.searchText('');
+            };
+            //close info window
+            root.closeInfoWndow = function() {
+              googleMapService.getInfoWindow().close();
+            };
+            //observableArray to store instagram pictures
+            root.instagramPictures = ko.observableArray([
+              { link: ko.observable(''),
+                txt: ko.observable('')
+              }
+            ]);
+            //Loads instagram pictures by univerity name
+            root.loadPics = function(name){
+              //make the university name compatible for instagram API
+              var instaName, words = name.split(/[\s,.]+/);
+              if(words.length < 3){
+                  instaName = name.replace(/[\s]+/g, '').toLowerCase();
+              }else{
+                  instaName = (words[0] + ' ' + words[1] + ' ' + words[2]).replace(/\s+/g, '').toLowerCase();
+              }
+              //get images from instagram
+              getInstaPics(10, instaName).then(function(response){
 
-    googleMapService.initializeMap();
-    googleMapService.fitBounds();
-    googleMapService.getData().then(function(data){
-        //faltting the location object
-        _.each(data, function(uni){
-            uni.location = {'lat': uni.geometry.location.H, 'long': uni.geometry.location.L};
-        });
-        //assign data to model.universities
-        model.universities = data;
-
-        //creating the viewModel object
-        var viewmodel = ko.viewmodel.fromModel(model, {
-            extend: {
-                '{root}.universities[i]': function(uni, root){
-                    uni.showInfoWindow = function(){
-                        googleMapService.openInfoWindow(uni, viewmodel);
-                    };
-                },
-                '{root}': function(root){
-                  //show and hide university list
-                  root.showList = ko.observable(true);
-                  //hide and show images div
-                  root.showPics = ko.observable(false);
-                  //searchText used to search for universities
-                  root.searchText = ko.observable('');
-                  //Error message
-                  root.errors = ko.observable('');
-                  //toggling list view on click
-                  root.toggleList = function() {
-                    root.showList(!root.showList());
-                  };
-                  //resetting the map markers and center
-                  root.resetMap = function() {
-                      root.searchText('');
-                      googleMapService.reset();
-                  };
-                  //clears the searchText in the input
-                  root.clearSearchText = function() {
-                    root.searchText('');
-                  };
-                  //close info window
-                  root.closeInfoWndow = function() {
-                    googleMapService.getInfoWindow().close();
-                  };
-                  //observableArray to store instagram pictures
-                  root.instagramPictures = ko.observableArray([
-                    { link: ko.observable(''),
-                      txt: ko.observable('')
-                    }
-                  ]);
-                  //Loads instagram pictures by univerity name
-                  root.loadPics = function(name){
-                    //make the university name compatible for instagram API
-                    var instaName, words = name.split(/[\s,.]+/);
-                    if(words.length < 3){
-                        instaName = name.replace(/[\s]+/g, '').toLowerCase();
-                    }else{
-                        instaName = (words[0] + ' ' + words[1] + ' ' + words[2]).replace(/\s+/g, '').toLowerCase();
-                    }
-                    //get images from instagram
-                    getInstaPics(10, instaName).then(function(response){
-
-                      //If we already loaded pictures in our observable array, removed all of them
-                      if(root.instagramPictures().length >= 1){
-                        root.instagramPictures.removeAll();
-                      }
-
-                      //map the url and caption of the response to our view model observable array
-                      _.map(response, function(x) {
-                          x.picUrl = ko.observable(x.images.thumbnail.url);
-                          x.txt = ko.observable(x.caption.text);
-                          root.instagramPictures.push(x);
-                      });
-                      //make the visibility of the div true
-                      root.showPics(true);
-
-                    })
-                    .catch(function(reason){
-                        root.errors('Cannot load pictures!');
-                    });
-                  };
+                //If we already loaded pictures in our observable array, removed all of them
+                if(root.instagramPictures().length >= 1){
+                  root.instagramPictures.removeAll();
                 }
-            }
-        });
 
-        //Subscribe to search text change
-        viewmodel.searchText.subscribe(function(value) {
-           var updatedModel = { universities: filterUniversities(model.universities, value)};
-           ko.viewmodel.updateFromModel(viewmodel, updatedModel);
-           initializeMarkers(viewmodel);
-       });
+                //map the url and caption of the response to our view model observable array
+                _.map(response, function(x) {
+                    x.picUrl = ko.observable(x.images.thumbnail.url);
+                    x.txt = ko.observable(x.caption.text);
+                    root.instagramPictures.push(x);
+                });
+                //make the visibility of the div true
+                root.showPics(true);
 
-       initializeMarkers(viewmodel);
-       ko.applyBindings(viewmodel);
-       googleMapService.initializeInfoWindow();
-    })
-    .catch(function(reason){
-        console.log(reason);
-        $('.google-map').hide();
-        $('body').prepend('<div class="error-dialog"><p class="error-message">' +
-                    'There was an error loading Google Maps. Please check ' +
-                    'your internet connection or try again later.</p></div>');
-    });
-});
+              })
+              .catch(function(reason){
+                  root.errors('Cannot load pictures!');
+              });
+            };
+          }
+      }
+  });
+  //Subscribe to search text change
+  viewmodel.searchText.subscribe(function(value) {
+     var updatedModel = { universities: filterUniversities(model.universities, value)};
+     ko.viewmodel.updateFromModel(viewmodel, updatedModel);
+ });
+
+  viewmodel.universities.subscribe(function(value){
+     initializeMarkers(viewmodel);
+  });
+ return viewmodel;
+}
+
+/**
+* @name initializeApp
+* @description This is a callback function of google map async defered script
+* Application get initialized in this function
+**/
+function initializeApp() {
+  googleMapService.initializeMap();
+  googleMapService.fitBounds();
+  googleMapService.getData().then(function(data){
+      //faltting the location object
+      _.each(data, function(uni){
+          uni.location = {'lat': uni.geometry.location.H, 'long': uni.geometry.location.L};
+      });
+     var viewmodel = initializeViewModel(data);
+     initializeMarkers(viewmodel);
+     ko.applyBindings(viewmodel);
+     googleMapService.initializeInfoWindow();
+  })
+  .catch(function(reason){
+      console.log(reason);
+      $('.google-map').hide();
+      $('body').prepend('<div class="error-dialog"><p class="error-message">' +
+                  'There was an error loading Google Maps. Please check ' +
+                  'your internet connection or try again later.</p></div>');
+  });
+}
 
 
 /* eslint multistr: true */
@@ -209,12 +225,11 @@ var googleMapService = new (function() {
      * It removes all markers in the map.
      */
     self.clearMarkers = function() {
-        markers.forEach(function(marker) {
+        markers.forEach(function(marker, index) {
             if (marker) {
                 marker.setMap(null);
             }
         });
-        markers = [];
     };
 
     /**
