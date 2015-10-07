@@ -33,12 +33,11 @@ var googleMapService = new (function() {
      * It removes all markers in the map.
      */
     self.clearMarkers = function() {
-        markers.forEach(function(marker) {
+        markers.forEach(function(marker, index) {
             if (marker) {
                 marker.setMap(null);
             }
         });
-        markers = [];
     };
 
     /**
